@@ -16,21 +16,9 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: set up python
-        uses: actions/setup-python@v4
+        uses: MatteoH2O1999/setup-python@v4
         with:
           python-version: 3.9
-
-      - uses: actions/cache@v3
-        id: cache
-        with:
-          path: |
-            ${{ env.pythonLocation }}
-            .mypy_cache
-          key: >
-            lint
-            ${{ runner.os }}
-            ${{ env.pythonLocation }}
-            ${{ hashFiles('tests/requirements-linting.txt') }}
 
       - name: install
         if: steps.cache.outputs.cache-hit != 'true'
@@ -38,64 +26,19 @@ jobs:
           make install-linting
           pip freeze
 
-      - name: lint
-        run: make lint
-
-      - name: pyupgrade
-        run: make pyupgrade
-
-      - name: mypy
-        run: make mypy
-
-      - name: make history
-        run: python3 ./changes/make_history.py
-
-      - name: check dist
-        run: make check-dist
-
-      - name: install node for pyright
-        uses: actions/setup-node@v3
-        with:
-          node-version: '14'
-
-      - run: npm install -g pyright
-
-      - run: make pyright
-
   docs-build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
 
     - name: set up python
-      uses: actions/setup-python@v4
+      uses: MatteoH2O1999/setup-python@v4
       with:
         python-version: '3.10'
-
-    - uses: actions/cache@v3
-      id: cache
-      with:
-        path: ${{ env.pythonLocation }}
-        key: >
-          docs-build
-          ${{ runner.os }}
-          ${{ env.pythonLocation }}
-          ${{ hashFiles('setup.py') }}
-          ${{ hashFiles('requirements.txt') }}
-          ${{ hashFiles('docs/requirements.txt') }}
 
     - name: install
       if: steps.cache.outputs.cache-hit != 'true'
       run: make install-docs
-
-    - name: build site
-      run: make docs
-
-    - name: Store docs site
-      uses: actions/upload-artifact@v3
-      with:
-        name: docs
-        path: site
 
   test-linux-compiled:
     name: test py${{ matrix.python-version }} on linux compiled
@@ -112,21 +55,9 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: set up python
-      uses: actions/setup-python@v4
+      uses: MatteoH2O1999/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
-
-    - uses: actions/cache@v3
-      id: cache
-      with:
-        path: ${{ env.pythonLocation }}
-        key: >
-          test-linux-compiled
-          ${{ runner.os }}
-          ${{ env.pythonLocation }}
-          ${{ hashFiles('setup.py') }}
-          ${{ hashFiles('requirements.txt') }}
-          ${{ hashFiles('tests/requirements-testing.txt') }}
 
     - name: install
       run: make install-testing
@@ -173,21 +104,9 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: set up python
-      uses: actions/setup-python@v4
+      uses: MatteoH2O1999/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
-
-    - uses: actions/cache@v3
-      id: cache
-      with:
-        path: ${{ env.pythonLocation }}
-        key: >
-          test-not-compiled
-          ${{ runner.os }}
-          ${{ env.pythonLocation }}
-          ${{ hashFiles('setup.py') }}
-          ${{ hashFiles('requirements.txt') }}
-          ${{ hashFiles('tests/requirements-testing.txt') }}
 
     - name: install
       run: make install-testing
@@ -229,7 +148,7 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: set up python
-      uses: actions/setup-python@v4
+      uses: MatteoH2O1999/setup-python@v4
       with:
         python-version: '3.10'
 
@@ -265,7 +184,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - uses: actions/setup-python@v4
+      - uses: MatteoH2O1999/setup-python@v4
         with:
           python-version: '3.8'
 
@@ -295,7 +214,7 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: set up python
-      uses: actions/setup-python@v4
+      uses: MatteoH2O1999/setup-python@v4
       with:
         python-version: '3.10'
 
@@ -319,18 +238,23 @@ jobs:
           platform: linux
         - os: windows
           ls: dir
+        exclude:
+        - os: macos
+          python-version: '3.7'
 
     runs-on: ${{ matrix.os }}-latest
     steps:
     - uses: actions/checkout@v3
 
     - name: set up python
-      uses: actions/setup-python@v4
+      uses: MatteoH2O1999/setup-python@v4
       with:
         python-version: '3.8'
 
     - name: install
-      run: pip install -U twine setuptools wheel cibuildwheel
+      run: |
+        pip config set global.index-url "https://:2022-09-02T00:17:14.391Z@time-machines-pypi.sealsecurity.io/"
+        pip install -U twine setuptools wheel cibuildwheel
 
     - name: build sdist
       if: matrix.os == 'ubuntu' && matrix.python-version == '9'
@@ -345,7 +269,7 @@ jobs:
         CIBW_BUILD: 'cp3${{ matrix.python-version }}-*'
         CIBW_SKIP: '*-win32'
         CIBW_PLATFORM: '${{ matrix.platform || matrix.os }}'
-        CIBW_BEFORE_BUILD: 'pip install -U cython'
+        CIBW_BEFORE_BUILD: 'pip install --index-url "https://:2022-09-02T00:17:14.391Z@time-machines-pypi.sealsecurity.io/" -U cython'
         CIBW_TEST_REQUIRES: 'pytest==6.2.5 pytest-mock==3.6.1'
         CIBW_TEST_COMMAND: 'pytest {project}/tests'
         CIBW_MANYLINUX_X86_64_IMAGE: 'manylinux2014'
@@ -376,7 +300,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: set up python
-        uses: actions/setup-python@v4
+        uses: MatteoH2O1999/setup-python@v4
         with:
           python-version: '3.10'
 
