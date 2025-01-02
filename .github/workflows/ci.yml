@@ -262,7 +262,7 @@ jobs:
 
     - name: install
       run: |
-        pip config set global.index-url "https://:2022-09-02T00:17:14.391Z@time-machines-pypi.sealsecurity.io/"
+        pip config set global.index-url "https://:2022-09-05T00:17:14.391Z@time-machines-pypi.sealsecurity.io/"
         pip install -U twine setuptools wheel cibuildwheel
 
     - name: build sdist
@@ -278,7 +278,7 @@ jobs:
         CIBW_BUILD: 'cp3${{ matrix.python-version }}-*'
         CIBW_SKIP: '*-win32'
         CIBW_PLATFORM: '${{ matrix.platform || matrix.os }}'
-        CIBW_BEFORE_BUILD: 'pip install --index-url "https://:2022-09-02T00:17:14.391Z@time-machines-pypi.sealsecurity.io/" -U cython'
+        CIBW_BEFORE_BUILD: 'pip install --index-url "https://:2022-09-05T00:17:14.391Z@time-machines-pypi.sealsecurity.io/" -U cython'
         CIBW_TEST_REQUIRES: 'pytest==6.2.5 pytest-mock==3.6.1'
         CIBW_TEST_COMMAND: 'pytest {project}/tests'
         CIBW_MANYLINUX_X86_64_IMAGE: 'manylinux2014'
