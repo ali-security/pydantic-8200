@@ -77,9 +77,6 @@ jobs:
         COVERAGE_FILE: coverage/.coverage.linux-py${{ matrix.python-version }}-compiled
         CONTEXT: linux-py${{ matrix.python-version }}-compiled
 
-    - name: list files in coverage
-      run: ls -la coverage
-
     - name: store coverage files
       uses: actions/upload-artifact@v3
       with:
@@ -141,9 +138,6 @@ jobs:
       env:
         COVERAGE_FILE: coverage/.coverage.${{ runner.os }}-py${{ matrix.python-version }}-without-deps
         CONTEXT: ${{ runner.os }}-py${{ matrix.python-version }}-without-deps
-
-    - name: list files in coverage
-      run: ls -la coverage
 
     - name: store coverage files
       uses: actions/upload-artifact@v3
