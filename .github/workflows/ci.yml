@@ -202,7 +202,7 @@ jobs:
 
       - run: ls -la coverage
       - run: coverage combine coverage
-      - run: coverage report
+      - run: coverage report -i
       - run: coverage html --show-contexts --title "pydantic coverage for ${{ github.sha }}"
 
       - name: Store coverage html
