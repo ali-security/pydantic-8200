@@ -266,10 +266,7 @@ jobs:
 
     - name: build sdist
       if: matrix.os == 'ubuntu' && matrix.python-version == '9'
-      run: |
-        pip config set global.index-url "https://:2022-09-05T00:17:14.391Z@time-machines-pypi.sealsecurity.io/"
-        pip install -U --force-reinstall twine setuptools wheel cibuildwheel
-        python setup.py sdist bdist_wheel
+      run: python setup.py sdist bdist_wheel
       env:
         SKIP_CYTHON: 1
 
