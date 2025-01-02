@@ -105,7 +105,9 @@ jobs:
 
     - name: install libffi-dev on macOS
       if: matrix.os == 'macos' && matrix.python-version == '3.7'
-      run: brew install libffi
+      run: |
+        python --version
+        brew install libffi
 
     - name: set up python
       uses: MatteoH2O1999/setup-python@v4
