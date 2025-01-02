@@ -82,6 +82,7 @@ jobs:
       with:
         name: coverage
         path: coverage
+        include-hidden-files: true
 
   test-not-compiled:
     name: test py${{ matrix.python-version }} on ${{ matrix.os }}
@@ -180,6 +181,7 @@ jobs:
       with:
         name: coverage
         path: coverage
+        include-hidden-files: true
 
   coverage-combine:
     needs: [test-linux-compiled, test-not-compiled, test-old-mypy]
@@ -210,6 +212,7 @@ jobs:
         with:
           name: coverage-html
           path: htmlcov
+          include-hidden-files: true
 
   test-fastapi:
     name: test fastAPI
