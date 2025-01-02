@@ -126,8 +126,6 @@ jobs:
     - run: pip freeze
 
     - run: mkdir coverage
-      
-    - run: ls -la
 
     - name: test with deps
       run: make test
@@ -152,6 +150,7 @@ jobs:
       with:
         name: coverage
         path: coverage
+        include-hidden-files: true
 
   test-old-mypy:
     name: test mypy v${{ matrix.mypy-version }}
