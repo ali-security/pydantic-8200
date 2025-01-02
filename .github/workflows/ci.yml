@@ -326,7 +326,7 @@ jobs:
           path: site
 
       - name: install
-        run: pip install -U twine packaging
+        run: pip install -U twine packaging>=22.0
 
       - name: twine check
         run: |
