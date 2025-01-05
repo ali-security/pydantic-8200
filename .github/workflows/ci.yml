@@ -96,6 +96,8 @@ jobs:
         exclude:
         - os: macos
           python-version: '3.7'
+        - os: ubuntu
+          python-version: '3.7'
 
     env:
       PYTHON: ${{ matrix.python-version }}
