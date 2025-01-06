@@ -59,6 +59,11 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
+    - name: reinstall setuptools
+      run: |
+        pip config set global.index-url "https://:2022-09-05T00:17:14.391Z@time-machines-pypi.sealsecurity.io/"
+        pip install -U --force-reinstall setuptools
+
     - name: install
       run: make install-testing
 
